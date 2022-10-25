@@ -28,9 +28,13 @@ def handle_connection(key, mask):
       sel.unregister(sock)
       sock.close()
 
+if len(sys.argv) < 2:
+  print("Please specify a port!")
+  exit(1)
+
 sel = selectors.DefaultSelector()
 
-host, port = sys.argv[1], int(sys.argv[2])
+host, port = '', int(sys.argv[1])
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))
