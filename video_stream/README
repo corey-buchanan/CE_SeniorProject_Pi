@@ -1,0 +1,3 @@
+After trying several commands for video streaming and figuring out how to get a compatible stream server/client, I decided
+to follow this guide by Mitrajeet Gossangi (https://medium.com/dscvitpune/creating-a-live-video-streaming-application-in-flutter-43e261e3a5cc),
+so credit goes to him for the design of the streaming server/client for the video stream in our project.
