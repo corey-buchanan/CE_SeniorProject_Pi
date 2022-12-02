@@ -13,7 +13,7 @@ import adafruit_gps
 # a slightly higher timeout (GPS modules typically update once a second).
 
 import serial
-uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=10)
+uart = serial.Serial("/dev/serial0", baudrate=9600, timeout=10)
 
 # Create a GPS module instance.
 gps = adafruit_gps.GPS(uart, debug=False)  # Use UART/pyserial
