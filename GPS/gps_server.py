@@ -25,13 +25,8 @@ gps = adafruit_gps.GPS(uart, debug=False)  # Use UART/pyserial
 # Turn on the basic GGA and RMC info 
 gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
 
-
 # Set update rate to once a second (1hz) 
 gps.send_command(b"PMTK220,1000")
-
-
-# Main loop runs forever printing the location, etc. every second.
-last_print = time.monotonic()
 
 def getCoordinates():
     # Make sure to call gps.update() every loop iteration and at least twice
@@ -41,57 +36,28 @@ def getCoordinates():
     gps.update()
     # Every second print out current location details if there's a fix.
     
-    while not gps.has_fix:
-        # Try again if we don't have a fix yet.
-        gps.update()
-        print("Waiting for fix...")
-        
-    # We have a fix! (gps.has_fix is true)
-    # Print out details about the fix like location, date, etc.
-    print("=" * 40)  # Print a separator line.
-    print(
-        "Fix timestamp: {}/{}/{} {:02}:{:02}:{:02}".format(
-            gps.timestamp_utc.tm_mon,  # Grab parts of the time from the
-            gps.timestamp_utc.tm_mday,  # struct_time object that holds
-            gps.timestamp_utc.tm_year,  # the fix time.  Note you might
-            gps.timestamp_utc.tm_hour,  # not get all data like year, day,
-            gps.timestamp_utc.tm_min,  # month!
-            gps.timestamp_utc.tm_sec,
-        )
-    )
-    latitude = "{0:.6f}".format(gps.latitude)
-    longitude = "{0:.6f}".format(gps.longitude)
-
-    print("Fix quality: {}".format(gps.fix_quality))
+    if not gps.has_fix:
+        latitude = "41.0325501"
+        longitude = "-111.95833025"
+    else:
+        latitude = "{0:.7f}".format(gps.latitude)
+        longitude = "{0:.7f}".format(gps.longitude)
 
     coordinates = str(latitude)+ "," + str(longitude)
     print("Coordinates",coordinates)
 
     return(coordinates)
 
-
-
-
 HOST = '169.254.221.209'  # Standard loopback interface address (localhost)
 PORT = 8081  # Port to listen on (non-privileged ports are > 1023)
 
-#only send 
-
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn: 
-        print(f"Connected by {addr}")
-
-        coordinates = getCoordinates()
-        conn.sendall(coordinates)
-
-
-
-        # while True:
-        #     data = conn.recv(1024)
-        #     print(data)
-        #     if not data:
-        #         break
-        #     conn.sendall(data)
+    while True:
+        s.listen()
+        conn, addr = s.accept()
+        with conn: 
+            print(f"Connected by {addr}")
+            
+            coordinates = getCoordinates()
+            conn.sendall(coordinates.encode())
