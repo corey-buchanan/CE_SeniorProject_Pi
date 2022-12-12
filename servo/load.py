@@ -1,3 +1,4 @@
+# Used to test the servo socket server - not used in production
 import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
