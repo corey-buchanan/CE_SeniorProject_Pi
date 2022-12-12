@@ -5,6 +5,9 @@ import selectors
 import sys
 import types
 
+# Credit to https://realpython.com/python-sockets/#handling-multiple-connections for instruction on how to service multiple
+# socket connections.
+
 def accept_wrapper(sock):
   conn, addr = sock.accept()
   print(f"Accepted connectionfrom {addr}")
