@@ -1,3 +1,7 @@
+# Thanks to Mitrajeet Golsangi whose article helped
+# us write the video streaming
+# (https://medium.com/dscvitpune/creating-a-live-video-streaming-application-in-flutter-43e261e3a5cc)
+
 import websockets
 import asyncio
 
